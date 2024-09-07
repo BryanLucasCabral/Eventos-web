@@ -1,0 +1,17 @@
+spring:
+  application: 
+      name: Eventos-Api
+  jpa:
+    show-sql: false
+    hibernate: 
+        ddl-auto: update
+  datasource:
+    url: jdbc:mysql://localhost:3306/eventos
+    username: root
+    password: root
+    drive-class-name: com.mysql.cj.jdbc.Driver
+  security:
+    secret-key: eventos2024
+    token-issuer: Eventos-Api
+server:
+    port: 8080
