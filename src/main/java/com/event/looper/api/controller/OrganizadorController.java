@@ -32,19 +32,19 @@ public class OrganizadorController {
     @Autowired
     private OrganizadorService organizadorService;
 
-    @Secured("ADMIN")
+    @Secured("ROLE_ADMIN")
     @PostMapping
     public ResponseEntity<Organizador> cadastrarOrganizador(@RequestBody Organizador organizador){
         return ResponseEntity.status(HttpStatus.CREATED).body(organizadorService.cadastrarOrganizador(organizador));
     }
     
-    @Secured({"ADMIN", "PART"})
+    @Secured({"ROLE_ADMIN", "ROLE_PART", "ROLE_ORG"})
     @GetMapping
     public ResponseEntity<Page<OrganizadorDTO>> ListarOrganizadores(@PageableDefault(size = 10, sort = "nome", direction = Direction.DESC) Pageable paginacao){
         return ResponseEntity.status(HttpStatus.OK).body(organizadorService.listarOrganizadores(paginacao));
     }
 
-    @Secured({"ADMIN", "PART"})
+    @Secured("ROLE_ADMIN")
     @GetMapping("/{id}")
     public ResponseEntity<Organizador> buscarOrganizadorPeloId(@PathVariable("id") Long id){
         Organizador organizador = organizadorService.buscarOrganizadorPeloId(id);
@@ -56,7 +56,7 @@ public class OrganizadorController {
         return ResponseEntity.status(HttpStatus.OK).body(organizador);
     }
 
-    @Secured({"ADMIN", "PART"})
+    @Secured({"ROLE_ADMIN", "ROLE_PART", "ROLE_ORG"})
     @GetMapping("/cnpj/{cnpj}")
     public ResponseEntity<Organizador> buscarOrganizadorPeloCnpj(@PathVariable("cnpj") String cnpj){ 
         Organizador organizador = organizadorService.buscarOrganizadoPeloCnpj(cnpj);
@@ -68,7 +68,7 @@ public class OrganizadorController {
         return ResponseEntity.status(HttpStatus.OK).body(organizador);
     }
 
-    @Secured("ADMIN")
+    @Secured({"ROLE_ADMIN", "ROLE_ORG"})
     @PutMapping("/{id}")
     public ResponseEntity<Organizador> atualizarOrganizador(@PathVariable("id") Long id, @Valid @RequestBody Organizador dadosOrganizador){
         Organizador organizador = organizadorService.buscarOrganizadorPeloId(id);
@@ -80,7 +80,7 @@ public class OrganizadorController {
         return ResponseEntity.status(HttpStatus.OK).body(organizadorService.atualizarOrganizador(id, dadosOrganizador));
     }
 
-    @Secured("ADMIN")
+    @Secured("ROLE_ADMIN")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarOrganizador (@PathVariable("id") Long id){
         Organizador organizador = organizadorService.buscarOrganizadorPeloId(id);
