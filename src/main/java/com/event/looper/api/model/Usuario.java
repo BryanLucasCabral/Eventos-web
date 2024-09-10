@@ -44,9 +44,13 @@ public class Usuario implements UserDetails{
     @Column(nullable = false)
     private Boolean participante;
 
+    @Column(nullable = false)
+    private Boolean administrador;
+
     public Usuario(){ 
         this.organizador = Boolean.FALSE;
         this.participante = Boolean.TRUE;
+        this.administrador = Boolean.FALSE;
     }
 
     public UsuarioDTO toDto (){
@@ -64,10 +68,13 @@ public class Usuario implements UserDetails{
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (organizador) {
-            return List.of(new SimpleGrantedAuthority("ADMIN"));
+            return List.of(new SimpleGrantedAuthority("ROLE_ORG"));
         }
         if (participante) {
-            return List.of(new SimpleGrantedAuthority("PART"));
+            return List.of(new SimpleGrantedAuthority("ROLE_PART"));
+        }
+        if (administrador) {
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
         }
 
         return null;
