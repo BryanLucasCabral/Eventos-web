@@ -27,12 +27,13 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/organizadores")
+@Secured({"ROLE_ADMIN", "ROLE_ADMIN", "ROLE_ORG"})
 public class OrganizadorController {
     
     @Autowired
     private OrganizadorService organizadorService;
 
-    @Secured("ROLE_ADMIN")
+    @Secured({"ROLE_ADMIN","ROLE_ORG"})
     @PostMapping
     public ResponseEntity<Organizador> cadastrarOrganizador(@RequestBody Organizador organizador){
         return ResponseEntity.status(HttpStatus.CREATED).body(organizadorService.cadastrarOrganizador(organizador));

@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrganizadorDTO {
-    private String cnpj;
-    private String razaoSocial;
-    private UsuarioDTO usuario;
+public class ParticipanteDTO {
+    private String cpf;
 }

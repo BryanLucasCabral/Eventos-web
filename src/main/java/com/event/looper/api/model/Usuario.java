@@ -1,5 +1,6 @@
 package com.event.looper.api.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class Usuario implements UserDetails{
     @Column(nullable = false)
     private String nome;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
@@ -67,17 +68,20 @@ public class Usuario implements UserDetails{
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
         if (organizador) {
-            return List.of(new SimpleGrantedAuthority("ROLE_ORG"));
+            authorities.add(new SimpleGrantedAuthority("ROLE_ORG"));
         }
         if (participante) {
-            return List.of(new SimpleGrantedAuthority("ROLE_PART"));
+            authorities.add(new SimpleGrantedAuthority("ROLE_PART"));
         }
         if (administrador) {
-            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
+            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         }
 
-        return null;
+        return authorities;
     }
 
     @Override
@@ -90,5 +94,23 @@ public class Usuario implements UserDetails{
         return email;
     }
 
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+    
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+    
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+    
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 
 }

@@ -16,23 +16,23 @@ import com.event.looper.api.repository.EventoRepository;
 
 @Service
 public class EventoService {
-    
+
     @Autowired
     private EventoRepository eventoRepository;
 
-    public Evento cadastrarEvento(Evento evento){ 
-       return eventoRepository.save(evento);
+    public Evento cadastrarEvento(Evento evento) {
+        return eventoRepository.save(evento);
     }
 
-    public Page<EventoDTO> listarEventos(Pageable paginacao) { 
+    public Page<EventoDTO> listarEventos(Pageable paginacao) {
         return eventoRepository.findAll(paginacao).map(evento -> evento.toDto());
     }
 
     public List<Evento> buscarEventosPelaData(LocalDate dataEvento) {
         return eventoRepository.findByDataEvento(dataEvento);
     }
-    
-    public Evento buscarEventoPeloTitulo(String titulo){ 
+
+    public Evento buscarEventoPeloTitulo(String titulo) {
         Optional<Evento> eventoOpt = eventoRepository.findByTitulo(titulo);
 
         if (eventoOpt.isPresent()) {
@@ -42,7 +42,7 @@ public class EventoService {
         throw new NaoEncontradoException("Evento não foi encontrado");
     }
 
-    public Evento buscarEventoPeloId(Long id){
+    public Evento buscarEventoPeloId(Long id) {
         Optional<Evento> eventoOpt = eventoRepository.findById(id);
 
         if (eventoOpt.isPresent()) {
@@ -51,7 +51,7 @@ public class EventoService {
         throw new NaoEncontradoException("Evento não foi encontrado");
     }
 
-    public Evento atualizarEvento(Long id, Evento dadosEvento){ 
+    public Evento atualizarEvento(Long id, Evento dadosEvento) {
         Optional<Evento> eventoOpt = eventoRepository.findById(id);
 
         if (eventoOpt.isPresent()) {
@@ -62,7 +62,7 @@ public class EventoService {
             evento.setSlug(dadosEvento.getSlug());
             evento.setLimiteParticipantes(dadosEvento.getLimiteParticipantes());
             evento.setDataEvento(dadosEvento.getDataEvento());
-            evento.setOrganizadorId(dadosEvento.getOrganizadorId());
+            evento.setOrganizador(dadosEvento.getOrganizador());
 
             return eventoRepository.save(evento);
         }
@@ -70,11 +70,11 @@ public class EventoService {
         throw new NaoEncontradoException("Evento não foi encontrado");
     }
 
-    public void deletarEvento(Long id){ 
+    public void deletarEvento(Long id) {
         Optional<Evento> eventoOpt = eventoRepository.findById(id);
-
-        if (eventoOpt.isPresent()) {
-            eventoRepository.deleteById(id);
+        if (eventoOpt.isEmpty()) {
+            throw new NaoEncontradoException("Evento não foi encontrado");
         }
+        eventoRepository.deleteById(id);
     }
 }
