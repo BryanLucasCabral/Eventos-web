@@ -2,6 +2,7 @@ package com.event.looper.api.dto;
 
 import java.time.LocalDate;
 
+import com.event.looper.api.model.Endereco;
 import com.event.looper.api.model.Organizador;
 
 import lombok.AllArgsConstructor;
@@ -18,4 +19,5 @@ public class EventoDTO {
     private LocalDate dataEvento;
     private Integer limiteParticipantes;
     private Organizador organizadorId;
+    private Endereco endereco;
 }

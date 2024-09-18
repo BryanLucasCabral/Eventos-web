@@ -9,8 +9,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.event.looper.api.dto.EnderecoDTO;
 import com.event.looper.api.dto.EventoDTO;
 import com.event.looper.api.exception.NaoEncontradoException;
+import com.event.looper.api.model.Endereco;
 import com.event.looper.api.model.Evento;
 import com.event.looper.api.repository.EventoRepository;
 
@@ -20,7 +22,20 @@ public class EventoService {
     @Autowired
     private EventoRepository eventoRepository;
 
+    @Autowired
+    private EnderecoService enderecoService;
+
     public Evento cadastrarEvento(Evento evento) {
+
+        Endereco endereco = evento.getEndereco();
+        EnderecoDTO enderecoDTO = enderecoService.buscarEnderecoPeloCep(endereco.getCep());
+        endereco.setBairro(enderecoDTO.getBairro());
+        endereco.setCidade(enderecoDTO.getLocalidade());
+        endereco.setComplemento(enderecoDTO.getComplemento());
+        endereco.setUf(enderecoDTO.getUf());
+        endereco.setLoogradouro(enderecoDTO.getLogradouro());
+        endereco.setEstado(enderecoDTO.getEstado());
+        endereco.setNumero(endereco.getNumero());
         return eventoRepository.save(evento);
     }
 
@@ -63,6 +78,16 @@ public class EventoService {
             evento.setLimiteParticipantes(dadosEvento.getLimiteParticipantes());
             evento.setDataEvento(dadosEvento.getDataEvento());
             evento.setOrganizador(dadosEvento.getOrganizador());
+
+            Endereco endereco = evento.getEndereco();
+            EnderecoDTO enderecoDTO = enderecoService.buscarEnderecoPeloCep(endereco.getCep());
+            endereco.setBairro(enderecoDTO.getBairro());
+            endereco.setCidade(enderecoDTO.getLocalidade());
+            endereco.setComplemento(enderecoDTO.getComplemento());
+            endereco.setUf(enderecoDTO.getUf());
+            endereco.setLoogradouro(enderecoDTO.getLogradouro());
+            endereco.setEstado(enderecoDTO.getEstado());
+            endereco.setNumero(endereco.getNumero());
 
             return eventoRepository.save(evento);
         }
